@@ -12,12 +12,12 @@
 // Connections to A4988
 
 // Motor steps per rotation
-const int STEPS_PER_REV = 512;
+const int STEPS_PER_REV = 360;
 const int dirPin = 2;  // Direction
 const int stepPin = 3; // Step
 const int startPoint = 0;
 const int bottles = 6;
-int bottlePositionInDegrees = STEPS_PER_REV / bottles; 
+int bottlePositionInDegrees = (STEPS_PER_REV / bottles); 
 int stepPosition;
 
 
@@ -45,10 +45,10 @@ void rotateClockwize(){
     for(int x = 0; x < (STEPS_PER_REV); x++) {
       // Creates a pulse that drives the STEP pin on the module.
       digitalWrite(stepPin,HIGH); 
-      generatePulse(1000);
-      // if(x == bottlePositionInDegrees){
-      //   delay(1000);
-      // }
+      generatePulse();
+      if(x == bottlePositionInDegrees){
+        delay(1000);
+      }
     } 
 }
 
