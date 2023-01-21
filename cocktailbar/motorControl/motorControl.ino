@@ -30,7 +30,8 @@ void loop() {
   //Set the motors to HIGH in order for them to rotate clockwize
   digitalWrite(dirPin,HIGH); 
   // Function that handles rotating in a specific degree
-  rotateClockwizeAndStopEach60Degrees();
+  // rotateClockwizeAndStopEach60Degrees();
+  // Serial.println("Hello World");
 
 }
 
@@ -63,6 +64,7 @@ void rotateToBaco(){
 void rotateToMalibuCola(){
   for(int x = 0; x < (STEPS_PER_REV); x++){
     generatePulse(1000);
+    counterInsideLoop++;
     if(counterInsideLoop % MALIBUCOLA == 0){
       break;
     }
@@ -74,6 +76,7 @@ void rotateToMalibuCola(){
 void rotateToRumFanta(){
   for(int x = 0; x < (STEPS_PER_REV); x++){
     generatePulse(1000);
+    counterInsideLoop++;
     if(counterInsideLoop % RUMFATNA == 0){
       break;
     }
@@ -85,6 +88,7 @@ void rotateToRumFanta(){
 void rotateToMalibuFanta(){
   for(int x = 0; x < (STEPS_PER_REV); x++){
     generatePulse(1000);
+    counterInsideLoop++;
     if(counterInsideLoop % MALIBUFANTA == 0){
       break;
     }
