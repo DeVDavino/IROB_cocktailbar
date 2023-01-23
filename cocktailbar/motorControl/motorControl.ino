@@ -7,10 +7,18 @@
 
 const int dirPin = 2;  // Direction
 const int stepPin = 3; // Step
-const int startPoint = 0;
+// row of leds
+const int ledPinOne = 4;
+const int ledPinTwo = 5;
+const int ledPinThree = 6;
+const int ledPinFour = 7;
+// -----------------------
+const int buttonPin = 8; // pushbutton pin
+int buttonState;
+int buttonCounter;
+// -----------------------
+int counterInsideLoop; //  counter that increments on each itteration of the forloop
 
-// testing
-int counterInsideLoop;
 
 void generatePulse(int pulse){
   digitalWrite(stepPin,HIGH); 
@@ -24,6 +32,17 @@ void setup() {
   // Setup the pins as Outputs
   pinMode(stepPin,OUTPUT); 
   pinMode(dirPin,OUTPUT);
+
+  // Baco pin -> testing with LEDS
+  pinMode(ledPinOne, OUTPUT);
+  // Malibu Cola -> testing with LEDS
+  pinMode(ledPinTwo, OUTPUT);
+  // Rum Fanta -> testing with LEDS
+  pinMode(ledPinThree, OUTPUT);
+  // Malibu Fanta -> testing with LEDS
+  pinMode(ledPinFour, OUTPUT);
+  // initialize the pushbutton pin as an input:
+  pinMode(buttonPin, INPUT);
 }
 
 void loop() {
@@ -31,7 +50,22 @@ void loop() {
   digitalWrite(dirPin,HIGH); 
   // Function that handles rotating in a specific degree
   // rotateClockwizeAndStopEach60Degrees();
-  // Serial.println("Hello World");
+  buttonState = digitalRead(buttonPin);
+
+  if(buttonState == HIGH){
+    digitalWrite(ledPinOne, HIGH);
+    digitalWrite(ledPinTwo, HIGH);
+    digitalWrite(ledPinThree, HIGH);
+    digitalWrite(ledPinFour, HIGH);
+  } else{
+    digitalWrite(ledPinOne, LOW);
+    digitalWrite(ledPinTwo, LOW);
+    digitalWrite(ledPinThree, LOW);
+    digitalWrite(ledPinFour, LOW);
+    buttonCounter++;
+    Serial.println(buttonCounter);
+  }
+
 
 }
 
@@ -51,13 +85,13 @@ void rotateClockwizeAndStopEach60Degrees(){
 
 //rotates motors to first position which is Bacardi Cola
 void rotateToBaco(){
+
   for(int x = 0; x < (STEPS_PER_REV); x++){
-    generatePulse(1000);
-    if(counterInsideLoop % BACO == 0){
-      break;
-    }
+  generatePulse(1000);
+  counterInsideLoop++;
   }
-  Serial.println("Bacardi Cola positie is bereikt");
+  Serial.println(counterInsideLoop);
+  
 }
 
 //rotates motors to first position which is Malibu Cola
