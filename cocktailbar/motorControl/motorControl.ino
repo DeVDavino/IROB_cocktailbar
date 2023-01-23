@@ -1,9 +1,11 @@
 #define STEPS_PER_REV 360
-#define STEPS_TO_DELAY 200
+#define STEPS_TO_DELAY 900
 #define BACO 900
 #define MALIBUCOLA 1800
 #define RUMFATNA 2700
 #define MALIBUFANTA 3600
+#define CLOCKWIZEROTATION HIGH
+#define COUNTERCLOCKWIZEROTATION LOW
 
 const int dirPin = 2;  // Direction
 const int stepPin = 3; // Step
@@ -52,19 +54,21 @@ void loop() {
   // rotateClockwizeAndStopEach60Degrees();
   buttonState = digitalRead(buttonPin);
 
-  if(buttonState == HIGH){
-    digitalWrite(ledPinOne, HIGH);
-    digitalWrite(ledPinTwo, HIGH);
-    digitalWrite(ledPinThree, HIGH);
-    digitalWrite(ledPinFour, HIGH);
-  } else{
-    digitalWrite(ledPinOne, LOW);
-    digitalWrite(ledPinTwo, LOW);
-    digitalWrite(ledPinThree, LOW);
-    digitalWrite(ledPinFour, LOW);
-    buttonCounter++;
-    Serial.println(buttonCounter);
-  }
+  // if(buttonState == HIGH){
+  //   digitalWrite(ledPinOne, HIGH);
+  //   digitalWrite(ledPinTwo, HIGH);
+  //   digitalWrite(ledPinThree, HIGH);
+  //   digitalWrite(ledPinFour, HIGH);
+  // } else{
+  //   digitalWrite(ledPinOne, LOW);
+  //   digitalWrite(ledPinTwo, LOW);
+  //   digitalWrite(ledPinThree, LOW);
+  //   digitalWrite(ledPinFour, LOW);
+  //   buttonCounter++;
+  //   Serial.println(buttonCounter);
+  // }
+
+  rotateClockwizeAndStopEach60Degrees();
 
 
 }
@@ -86,6 +90,7 @@ void rotateClockwizeAndStopEach60Degrees(){
 //rotates motors to first position which is Bacardi Cola
 void rotateToBaco(){
 
+  digitalWrite(dirPin,HIGH); 
   for(int x = 0; x < (STEPS_PER_REV); x++){
   generatePulse(1000);
   counterInsideLoop++;
@@ -97,6 +102,7 @@ void rotateToBaco(){
 //rotates motors to first position which is Malibu Cola
 void rotateToMalibuCola(){
   for(int x = 0; x < (STEPS_PER_REV); x++){
+    digitalWrite(dirPin,CLOCKWIZEROTATION); 
     generatePulse(1000);
     counterInsideLoop++;
     if(counterInsideLoop % MALIBUCOLA == 0){
