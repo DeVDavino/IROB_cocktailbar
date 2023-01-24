@@ -1,16 +1,25 @@
 #include <Servo.h>
 
-bool calibrated = false;
-
-const int BUTTON_PIN = 7;
-const int HALL_PIN = A0;
-
-int lastState = HIGH;
-int currentState;
-
-int receive = 0;
+#define BUTTON_PIN 7
+#define POSITION_PIN A0
+#define CALIBRATE_PIN A1
+#define STEPS_PER_REV 360
+#define STEPS_TO_DELAY 200
+#define CLOCKWIZEROTATION HIGH
+#define COUNTERCLOCKWIZEROTATION LOW
+#define MOTOR_RELAIS_PIN 12
 
 Servo myservo;  
+
+const int dirPin = 2;  // Direction
+const int stepPin = 3; // Step
+
+bool calibrateState = true;
+bool moveMotor = true;
+int counterInsideLoop; //  counter that increments on each itteration of the forloop
+int lastState = HIGH;
+int currentState;
+int receive = 0;
 int pos = 0;  
 
 // 0 baco
@@ -23,8 +32,29 @@ void setup() {
   myservo.attach(9);  
 
   pinMode(BUTTON_PIN, INPUT_PULLUP);
-  pinMode(HALL_PIN, INPUT);
+  pinMode(POSITION_PIN, INPUT);
+  pinMode(CALIBRATE_PIN, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
+
+  // motor
+  pinMode(stepPin,OUTPUT); 
+  pinMode(dirPin,OUTPUT);
+  pinMode(MOTOR_RELAIS_PIN, OUTPUT);
+
+  digitalWrite(MOTOR_RELAIS_PIN, LOW);
+
+  myservo.write(pos);
+  
+  if (!calibrateState){
+    calibrate();
+  }
+
+  delay(5000);
+
+  moveStep(2);
+
+
+  
 }
 
 void loop() {
@@ -40,45 +70,36 @@ void loop() {
         break;
       case 1:
         Serial.println("Malibu Cola");
-        movePump(2); 
+        movePump(20); 
         break;
       case 2:
         Serial.println("Rum Fanta");
-        movePump(3); 
+        movePump(20); 
         break;
       case 3:
         Serial.println("Malibu Fanta");
-        movePump(4); 
+        movePump(20); 
         break;
     }
   }   
 
+  // TIJDELIJK OF ALS RESET KNOP
   // Reset button -> volgend drankje kan gemaakt worden.
   if(lastState == LOW && currentState == HIGH){
     Serial.write(1);   
   }
+
   lastState = currentState;
 
-  // Neemt de calibrate magneet weer. 
-  if (analogRead(HALL_PIN) == 0) {
-    Serial.write(1);
-    calibrated = true;
-    Serial.println("magneet");
-  } 
-  
-  
-  // Kan later weg, is te zien of de magneet gedetecteerd wordt.
-  if(!calibrated) {
-    digitalWrite(LED_BUILTIN, HIGH);
-  } else {
-    digitalWrite(LED_BUILTIN, LOW);
+  if(analogRead(POSITION_PIN) > 5) {
+    Serial.println("magneetje");
   }
+
+  Serial.println(analogRead(POSITION_PIN));
 }
 
-// 
+ 
 void movePump(int amount) {
-  calibrated = false;
-
   for(int i = 0; i < amount; i++){
      for (pos = 0; pos <= 100; pos += 1) { 
     myservo.write(pos);              
@@ -97,3 +118,51 @@ void movePump(int amount) {
   Serial.println("pomp");
   }
 }
+
+
+void generatePulse(int pulse){
+  digitalWrite(stepPin,HIGH); 
+  delayMicroseconds(pulse); 
+  digitalWrite(stepPin,LOW); 
+  delayMicroseconds(pulse);
+}
+
+
+void calibrate(){
+  Serial.println("calibrate");
+  digitalWrite(MOTOR_RELAIS_PIN, HIGH);
+  do{
+    for(int x = 0; x < (STEPS_PER_REV); x++) {
+      generatePulse(1000);
+      counterInsideLoop++;
+    }
+    Serial.println(counterInsideLoop);
+
+  } while(analogRead(CALIBRATE_PIN) > 10);
+  digitalWrite(MOTOR_RELAIS_PIN, LOW);
+  Serial.write(1);
+  calibrateState = true;
+}
+
+
+void moveStep(int amount) {
+  digitalWrite(MOTOR_RELAIS_PIN, HIGH);
+
+  for(int x = 0; x < STEPS_PER_REV; x++) {
+    generatePulse(1000);
+  }
+  for(int i = 0; i < amount; i++) {
+    do{
+      for(int x = 0; x < STEPS_PER_REV; x++) {
+        if(analogRead(POSITION_PIN) < 5){
+          moveMotor = false;
+          break;
+        }
+        generatePulse(1000);
+      }
+    } while(moveMotor);
+  }
+  digitalWrite(MOTOR_RELAIS_PIN, LOW);
+}
+
+
