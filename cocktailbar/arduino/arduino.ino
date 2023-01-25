@@ -59,7 +59,7 @@ void setup() {
 
   // movePump(5);
 
-  moveStep(1);
+  moveStep(3);
 }
 
 void loop() {
@@ -153,31 +153,54 @@ void calibrate(){
   Serial.write(1);
 }
 
+
+// x Zetje geven plus delay (delay later verwijderen)
+// x Blijven draaien
+// x Magneten herkennen
+// x Stoppen wanneer magneet herkent wordt
+// x Amount forloep toepasen
+
+
 // Amount saat voor aantal posities opschuiven vanaf het calibratie punt.
 void moveStep(int amount) {
-  Serial.println("amount");
+  // Bereid de motoren voor
+  Serial.println("Move");
+  Serial.println(amount);
   digitalWrite(MOTOR_RELAIS_PIN, LOW);
+
+  // Zorgt dat de do while blijft doorgaan.
   moveMotor = true;
 
-  for(int i = 0; i <= amount; i++) {
-    // Geeft een zetje zodat deze ver genoeg van de magneet is.
-    // for(int x = 0; x < STEPS_PER_REV; x++) {
-    //   generatePulse(1000);
-    // }
-    
-    // Blijf draaien tot dat er een magneet gedetecteerd wordt.
+  // Herhaald de onderstaande code "amount" aantal keer 
+  for(int i = 0; i < amount; i++) {
+    Serial.println("Zetje");
+
+    // Geeft een zetje
+    for(int x = 0; x < STEPS_PER_REV; x++) {
+      generatePulse(1000);
+    } 
+
+    // delay(2000);
+
+    Serial.println(i);
+
+    // Blijft draaien tot dat er een magneet gedetecteerd wordt
     do{
       for(int x = 0; x < STEPS_PER_REV; x++) {
-        if(analogRead(POSITION_PIN) < 10){
+        if(analogRead(POSITION_PIN) < 100){
           moveMotor = false;
-          Serial.println("magneet");
           break;
         }
         generatePulse(1000);
       }
     } while(moveMotor);
+    // Zet motor weer op true zodat deze eventueel door kan draaien naar de volgende magneet
+    moveMotor = true;
   }
+
+  Serial.println("Done");
   digitalWrite(MOTOR_RELAIS_PIN, HIGH);
 }
 
-
+// Rood - blauw
+// Zwart - groen
