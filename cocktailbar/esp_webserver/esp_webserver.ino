@@ -46,10 +46,13 @@ void setup(void){
   }
 
   server.on("/", handleRoot);  
-  server.on("/baco", handleBaco);
-  server.on("/malibu-cola", handleMalibuCola);
-  server.on("/rum-fanta", handleRumFanta); 
-  server.on("/malibu-fanta", handleMalibuFanta);
+  server.on("/water", handleWater);
+  server.on("/vodka-cola", handleVodkaCola);
+  server.on("/blue-moon", handleBlueMoon); 
+  server.on("/chardonnay", handleChardonnay);
+  server.on("/rose", handleRose);
+  server.on("/cola", handleCola);
+  server.on("/clean", handleClean);
   server.onNotFound(handleNotFound);        
 
   server.begin();                           
@@ -74,23 +77,38 @@ void handleRoot() {
   server.send(200, "text/html", index); 
 }
 
-void handleBaco() {
-  Serial.println("Baco");
+void handleWater() {
+  Serial.println("Water");
   request(0);
 }
 
-void handleMalibuCola() {
-  Serial.println("Malibu Cola");
+void handleVodkaCola() {
+  Serial.println("Vodka Cola");
   request(1);
 }
 
-void handleRumFanta() {
-  Serial.println("Rum Fanta");
+void handleBlueMoon() {
+  Serial.println("Blue Moon");
   request(2);
 }
 
-void handleMalibuFanta() {
-  Serial.println("Malibu Fanta");
+void handleChardonnay() {
+  Serial.println("Chardonnay");
+  request(3);
+}
+
+void handleRose() {
+  Serial.println("Rose");
+  request(3);
+}
+
+void handleCola() {
+  Serial.println("Cola");
+  request(3);
+}
+
+void handleClean() {
+  Serial.println("Clean");
   request(3);
 }
 

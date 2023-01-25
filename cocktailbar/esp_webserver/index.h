@@ -10,8 +10,9 @@ const char MAIN_PAGE[] PROGMEM = R"=====(
             margin: 0;
             padding: 0; 
             font-size: 14px;
-            background: #2C3333;
-            font-family: Arial, Helvetica, sans-serif; 
+            background: linear-gradient(#e66465, #9198e5);
+            font-family: sans-serif;
+            height: 100vh;
         }
 
         header {
@@ -19,7 +20,7 @@ const char MAIN_PAGE[] PROGMEM = R"=====(
             top:0; 
             width: 100%; 
             height: 15vh; 
-            background: #395B64;
+            background: #140005;
         }
 
         h1 {
@@ -42,13 +43,13 @@ const char MAIN_PAGE[] PROGMEM = R"=====(
         }
 
         h2 {
-            color: #ffffff;
+            color: #140005;
             margin: 0;
         }
 
         hr {
             height: 5px;
-            background: #ffffff;
+            background: #140005;
             border: none;
         }
 
@@ -56,11 +57,12 @@ const char MAIN_PAGE[] PROGMEM = R"=====(
             font-size: 200%;
             width: 100%;
             border: none;
-            background: #A5C9CA;
-            color: #ffffff;
+            background: #140005;
+            color: #fcfcff;
             border-radius: 10px;
-            padding: 1vh 0;
+            padding: 1.5vh 0;
             margin: 1vh 0;
+            cursor: pointer;
         }
     </style>
     <body>
@@ -68,20 +70,29 @@ const char MAIN_PAGE[] PROGMEM = R"=====(
             <h1>COCKTAIL BAR</h1>
         </header>
         <section>
-            <h2>Mix</h2>
-            <hr/>
-            <form action="/baco" method="POST">
-                <button type="submit">BACO</button>
-            </form>
-            <form action="/malibu-cola" method="POST">
-                <button type="submit">Malibu Cola</button>
-            </form>
-            <form action="/rum-fanta" method="POST">
-                <button type="submit">Rum Fanta</button>
-            </form>
-            <form action="/malibu-fanta" method="POST">
-                <button type="submit">Malibu Fanta</button>
-            </form>
+          <h2>Mix</h2>
+          <hr/>
+          <form action="/water" method="POST">
+            <button type="submit">Water</button>
+          </form>
+          <form action="/vodka-cola" method="POST">
+            <button type="submit">Vodka Cola</button>
+          </form>
+          <form action="/blue-moon" method="POST">
+              <button type="submit">Blue Moon</button>
+          </form>
+          <form action="/chardonnay" method="POST">
+              <button type="submit">Chardonnay</button>
+          </form>
+          <form action="/rose" method="POST">
+              <button type="submit">Rosé</button>
+          </form>
+          <form action="/cola" method="POST">
+              <button type="submit">Cola</button>
+          </form>
+          <form action="/clean" method="POST">
+            <button type="submit">Scoonmaken / Legen</button>
+        </form>
         </section>
     </body>
 </html>
